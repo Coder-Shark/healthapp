@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import html5lib
 
 disease = input('note: if the disease has two names connect the names with a hiphen.\nenter the disease which you want find medicine for: ')
 if disease == "cancer":
@@ -16,12 +17,14 @@ elif disease == "glaucoma":
     disease = "glaucoma-open-angle."
 elif disease == "stomach-ulcer":
     disease = "gastric-ulcer"
+try:
+    url = f"https://www.drugs.com/condition/{disease}.html"
+    html_content = requests.get(url).text
+    soup = BeautifulSoup(html_content, "html5lib")
 
-url = f"https://www.drugs.com/condition/{disease}.html"
-html_content = requests.get(url).text
-soup = BeautifulSoup(html_content, "lxml")
+    main_class = soup.find("tr", attrs={"class":"condition-table__summary"})
+    link = main_class.find("a")
 
-main_class = soup.find("tr", attrs={"class":"condition-table__summary"})
-link = main_class.find("a")
-
-print(link.text)
+    print(link.text)
+except:
+    print("Check the keyword written")    
