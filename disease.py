@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 
 #getting input from user
-disease = input("enter the disease you want to search for: ")
+disease = input("enter the disease you want to search for : ")
 
 #url for scraping
 url = f"https://medlineplus.gov/{disease}.html"
