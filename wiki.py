@@ -27,3 +27,4 @@ sixo=six.find('th').getText()
 sixt=six.find('td').getText()
 
 
+print("by: \n fredysomy")
