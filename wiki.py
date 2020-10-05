@@ -25,6 +25,6 @@ fivet=five.find('td').getText()
 six=s.find_all('tr')[8]
 sixo=six.find('th').getText()
 sixt=six.find('td').getText()
-
+print(sixo)
 
 print("by: \n fredysomy")
