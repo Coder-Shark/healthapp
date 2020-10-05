@@ -7,6 +7,14 @@ import requests as r
 from bs4 import BeautifulSoup
 import html5lib
 import lxml
+import time
+def timte():
+    time_now=time.strftime('%r:%x')
+    timestring.config(text=time_now)
+    timestring.after(100,timte)
+timestring=tk.Label(root)
+timestring.place(x=90,y=100)
+timte()  
 
 root= tk.Tk()
 
