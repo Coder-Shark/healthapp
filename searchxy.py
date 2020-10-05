@@ -27,22 +27,30 @@ canvas1.create_window(200, 140, window=entry1)
 
 
 
-def getSR():
+def getsrgoogle():
     
     x1 = entry1.get()
     
-    label3 = tk.Label(root, text= 'The possible results of ' + x1 + ' is:',font=('century schoolbook', 15))
+    label3 = tk.Label(root, text= 'The possible results of  in google' + x1 + ' is:',font=('century schoolbook', 15))
     canvas1.create_window(200, 210, window=label3)
     
     label4 = tk.Label(root,font=('century', 12, 'bold'))
     canvas1.create_window(200, 230, window=label4)
     
+def getsrwiki():
+     x1 = entry1.get()
     
+    label3 = tk.Label(root, text= 'The possible results of in wiwkipedia ' + x1 + ' is:',font=('century schoolbook', 15))
+    canvas1.create_window(200, 210, window=label3)
     
-button1 = tk.Button(text='Search Google',command=getSR, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
+    label4 = tk.Label(root,font=('century', 12, 'bold'))
+    canvas1.create_window(200, 230, window=label4)
+
+    
+button1 = tk.Button(text='Search Google',command=getsrgoogle, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
 canvas1.create_window(100, 180, window=button1)
 
-button1 = tk.Button(text='Search Wikipedia',command=getSR, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
+button1 = tk.Button(text='Search Wikipedia',command=getsrwiki, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
 canvas1.create_window(280, 180, window=button1)
 
 
