@@ -1,6 +1,12 @@
 import tkinter as tk
 from tkinter import *
-
+import pycountry
+import plotly.express as px
+import pandas as pd
+import requests as r
+from bs4 import BeautifulSoup
+import html5lib
+import lxml
 
 root= tk.Tk()
 
