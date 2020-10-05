@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+<<<<<<< HEAD
 import pycountry
 import plotly.express as px
 import pandas as pd
@@ -18,6 +19,15 @@ def timte():
 timestring=tk.Label(root)
 timestring.place(x=90,y=100)
 timte()
+=======
+"""import pycountry
+import plotly.express as px
+import pandas as pd
+import requests as r"""
+from bs4 import BeautifulSoup
+import html5lib
+"""import lxml"""
+>>>>>>> 73d38a947c39e02fe150cf45a22df1afa547e59b
 
 
 
@@ -37,20 +47,49 @@ canvas1.create_window(200, 140, window=entry1)
 
 
 
+<<<<<<< HEAD
 def getSR():
 
     x1 = entry1.get()
 
     label3 = tk.Label(root, text= 'The possible results of ' + x1 + ' is:',font=('century schoolbook', 15))
+=======
+def getsrgoogle():
+    
+    x1 = entry1.get()
+    
+    label3 = tk.Label(root, text= 'The possible results of  in google' + x1 + ' is:',font=('century schoolbook', 15))
+>>>>>>> 73d38a947c39e02fe150cf45a22df1afa547e59b
     canvas1.create_window(200, 210, window=label3)
 
     label4 = tk.Label(root,font=('century', 12, 'bold'))
     canvas1.create_window(200, 230, window=label4)
+<<<<<<< HEAD
 
 
 
 button1 = tk.Button(text='Search',command=getSR, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
 canvas1.create_window(200, 180, window=button1)
+=======
+    
+def getsrwiki():
+     x1 = entry1.get()
+    
+    label3 = tk.Label(root, text= 'The possible results of in wiwkipedia ' + x1 + ' is:',font=('century schoolbook', 15))
+    canvas1.create_window(200, 210, window=label3)
+    
+    label4 = tk.Label(root,font=('century', 12, 'bold'))
+    canvas1.create_window(200, 230, window=label4)
+
+    
+button1 = tk.Button(text='Search Google',command=getsrgoogle, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
+canvas1.create_window(100, 180, window=button1)
+
+button1 = tk.Button(text='Search Wikipedia',command=getsrwiki, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
+canvas1.create_window(280, 180, window=button1)
+
+
+>>>>>>> 73d38a947c39e02fe150cf45a22df1afa547e59b
 
 bottomframe=Frame(root)
 scroll=Scrollbar(bottomframe)
