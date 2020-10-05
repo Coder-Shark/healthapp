@@ -1,20 +1,13 @@
 import tkinter as tk
 from tkinter import *
-import pycountry
+"""import pycountry
 import plotly.express as px
 import pandas as pd
-import requests as r
+import requests as r"""
 from bs4 import BeautifulSoup
 import html5lib
-import lxml
-import time
-def timte():
-    time_now=time.strftime('%r:%x')
-    timestring.config(text=time_now)
-    timestring.after(100,timte)
-timestring=tk.Label(root)
-timestring.place(x=90,y=100)
-timte()  
+"""import lxml"""
+
 
 root= tk.Tk()
 
@@ -46,8 +39,13 @@ def getSR():
     
     
     
-button1 = tk.Button(text='Search',command=getSR, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
-canvas1.create_window(200, 180, window=button1)
+button1 = tk.Button(text='Search Google',command=getSR, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
+canvas1.create_window(100, 180, window=button1)
+
+button1 = tk.Button(text='Search Wikipedia',command=getSR, bg='brown', fg='white', font=('century schoolbook', 12 , 'bold'))
+canvas1.create_window(280, 180, window=button1)
+
+
 
 bottomframe=Frame(root)
 scroll=Scrollbar(bottomframe)
