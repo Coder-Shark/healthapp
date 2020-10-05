@@ -43,7 +43,7 @@ scroll.config(command=answer.yview)
 answer.pack()
 bottomframe.pack()
 
-button_quit=tk.Label(root,text='****END OF THE PROGRAM****')
+button_quit=tk.Label(root,text='******END OF THE PROGRAM****')
 button_quit.config(font=('algerian',15))
 button_quit.pack()
 
