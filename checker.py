@@ -33,3 +33,15 @@ if possible:
      print(*possible)
 else:
      print("Good news! You're going to have a disease named after you!")
+
+
+import tkinter as tk
+from tkinter import *
+import pycountry
+import plotly.express as px
+import pandas as pd
+import requests as r
+from bs4 import BeautifulSoup
+import html5lib
+import lxml
+import time
