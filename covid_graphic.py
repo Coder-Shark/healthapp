@@ -1,35 +1,57 @@
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
-from matplotlib.dates import DateFormatter
-import matplotlib.ticker as ticker
+import requests 
+from bs4 import BeautifulSoup 
+from prettytable import PrettyTable
 
-frame = pd.read_csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv",
-                    parse_dates=['Date'])
-countries = ['India', 'US', 'China']
-frame = frame[frame['Country'].isin(countries)]
+url = 'https://www.mohfw.gov.in/' 
 
-frame['Cases'] = frame[['Confirmed', 'Recovered', 'Deaths']].sum(axis=1)
+web_content = requests.get(url).content
 
-frame = frame.pivot(index="Date", columns="Country", values="Cases")
-countries = list(frame.columns)
-covid = frame.reset_index('Date')
-covid.set_index(['Date'], inplace=True)
-covid.columns = countries
-populations = {'India': 1352642280, 'US': 330548815, 'China': 1438027228}
-percapita = covid.copy()
-for country in list(percapita.columns):
-    percapita[country] = percapita[country] / populations[country] * 100000
+soup = BeautifulSoup(web_content, "html.parser")
 
-colors = {'India':'#045275', 'China':'#089099','US':'#DC3977'}
-plt.style.use('fivethirtyeight')
+extract_contents = lambda row: [x.text.replace('\n', '') for x in row] 
 
-plot = covid.plot(figsize=(12,8), color=list(colors.values()), linewidth=5, legend=False)
-plot.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
-plot.grid(color='#d4d4d4')
-plot.set_xlabel('Date')
-plot.set_ylabel('# of Cases')
+stats = []
+all_rows = soup.find_all('tr')
 
-for country in list(colors.keys()):
-    plot.text(x = covid.index[-1], y = covid[country].max(), color = colors[country], s = country, weight = 'bold')
+for row in all_rows: 
+    stat = extract_contents(row.find_all('td')) 
+    if len(stat) == 5: 
+        stats.append(stat)
+
+new_cols = ["Sr.No", "States/UT","Confirmed","Recovered","Deceased"]
+state_data = pd.DataFrame(data = stats, columns = new_cols)
+
+state_data['Confirmed'] = state_data['Confirmed'].map(int)
+state_data['Recovered'] = state_data['Recovered'].map(int)
+state_data['Deceased']  = state_data['Deceased'].map(int)
+
+table = PrettyTable()
+table.field_names = (new_cols)
+for i in stats:
+    table.add_row(i)
+table.add_row(["","Total", 
+               sum(state_data['Confirmed']), 
+               sum(state_data['Recovered']), 
+               sum(state_data['Deceased'])])
 
 
+group_size = [sum(state_data['Confirmed']), 
+              sum(state_data['Recovered']), 
+              sum(state_data['Deceased'])]
+
+group_labels = ['Confirmed\n' + str(sum(state_data['Confirmed'])), 
+                'Recovered\n' + str(sum(state_data['Recovered'])), 
+                'Deceased\n'  + str(sum(state_data['Deceased']))]
+custom_colors = ['skyblue','yellowgreen','tomato']
+
+plt.figure(figsize = (5,5))
+plt.pie(group_size, labels = group_labels, colors = custom_colors)
+central_circle = plt.Circle((0,0), 0.5, color = 'white')
+fig = plt.gcf()
+fig.gca().add_artist(central_circle)
+plt.rc('font', size = 12) 
+plt.title('Nationwide total Confirmed, Recovered and Deceased Cases', fontsize = 16)
+plt.show()
