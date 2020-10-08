@@ -4,7 +4,7 @@ import html5lib
 r=r.get('https://en.wikipedia.org/wiki/aids')
 so=BeautifulSoup(r.content,'html5lib')
 title=so.find("h1",class_="firstHeading").getText()
-p=so.find_all("p")[1].getText()
+p=so.find_all("p")[2].getText()
 s=so.find('table',class_="infobox")
 f=s.find('tbody')
 try:
@@ -28,6 +28,6 @@ try:
     sixt=six.find('td').getText()
 except:
     print("THere has been a tech difficulty")    
-print(sixo)
+print(p)
 
 print("by: \n fredysomy")

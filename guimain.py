@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import *
-
+from tkinter import messagebox
+import requests
+from bs4 import BeautifulSoup
+import html5lib
 
 
 root= tk.Tk()
 root.title('HEATH APP')
-root.iconbitmap('D:/pack/ic.ico')
+
 
 
 
@@ -22,7 +25,7 @@ label5=tk.Label(root,text="5 Don’t Share Personal Items",fg="black",bg="yellow
 label6=tk.Label(root,text="6 Get Vaccinated",fg="black",bg="yellow")
 label7=tk.Label(root,text="8 Avoid Touching Wild Animals",fg="black",bg="yellow")
 label8=tk.Label(root,text="7 cough & sneeze using a tissue",fg="black",bg="yellow")
-label10=tk.Label(root,text="➕",fg="white",bg="red")
+
                                    
 label1.config(font=('jokerman',15))
 canvas1.create_window(830,120,window=label1)
@@ -42,8 +45,7 @@ label8.config(font=('jokerman',15))
 canvas1.create_window(170,530,window=label8)
 label9.config(font=('jokerman',45))
 canvas1.create_window(500,120,window=label9)
-label10.config(font=('jokerman',45))
-canvas1.create_window(500,490,window=label10)
+
 
 
 
@@ -61,14 +63,47 @@ canvas1.create_window(500, 250, window=entry1)
 
 
 def getsrgoogle():
+    srch=entry1.get()
+    if entry1.get() == "":
+         messagebox.showerror("ERROR","No Internet Connection")
+         return None
+    else:
+        lsd=" "
+        url="https://www.google.com/search?q="+entry1.get()+"&start=0&sa=N&ved=2ahUKEwi7_fTxvcPrAhUy6XMBHahXAuc4ChDy0wN6BAgLEC8&biw=1600&bih=757"
+        r=requests.get(url)
+        soup=BeautifulSoup(r.content,'html5lib')
+        f=soup.find('div',id="main")
+        for i in range(1,len(f)-1):
+            try:
+                g=f.find_all(class_='ZINbbc xpd O9g5cc uUPGi')[i]
+                desc=g.find(class_="BNeawe vvjwJb AP7Wnd").getText()
+                desc2=g.find(class_="BNeawe s3v9rd AP7Wnd").getText()
+                
+                try:
+                    u=g.find('a')['href']
+                    x=u.split('&')[0].split('?q=')[1]
+                    lsd=lsd+"\n"+desc+"\n"+desc2+"\n"+x+"\n"+"__________________"+"\n"
+                    
+                except:
+                    u=g.find('a')['href']
+                    x=u.split('&')[0]
+                    gh={"url":x,"desc":desc,"desc2":desc2}
+                    l=l+[gh]
+                    lsd=lsd+"\n"+desc+"\n"+desc2+"\n"+x+"\n"+"__________________"+"\n"
+                    
+            except:
+                print()
+
+
     top=Toplevel()
-    top.title('google results are')
+    top.title('google results are{}'.format(entry1.get()))
     
     bottomframe=Frame(top)
     scroll=Scrollbar(bottomframe)
     scroll.pack(side=RIGHT,fill=Y)
     answer=Text(bottomframe,width=100, height=25,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
     scroll.config(command=answer.yview)
+    answer.insert(END,lsd)
     answer.pack()
     bottomframe.pack()
     b1=tk.Button(top,text='search database',bg='red',fg='white',font=('century schoolbook',12,'bold'))
@@ -78,24 +113,70 @@ def getsrgoogle():
 
     
 def getsrwiki():
+    ad=entry1.get()
+    if entry1.get() == "":
+         messagebox.showerror("ERROR","No Internet Connection")
+         return None
+    else:
+        r=requests.get('https://en.wikipedia.org/wiki/{}'.format(entry1.get()))
+        so=BeautifulSoup(r.content,'html5lib')
+        title=so.find("h1",class_="firstHeading").getText()
+        p=so.find_all("p")[2].getText()
+        s=so.find('table',class_="infobox")
+        f=s.find('tbody')
+        try:
+            one=s.find_all('tr')[1]
+            oneo=one.find('th').getText()
+            onet=one.find('td').getText()
+            two=s.find_all('tr')[5]
+            twoo=two.find('th').getText()
+            twot=two.find('td').getText()
+            three=s.find_all('tr')[6]
+            threeo=three.find('th').getText()
+            threet=three.find('td').getText()
+            four=s.find_all('tr')[7]
+            fouro=four.find('th').getText()
+            fourt=four.find('td').getText()
+            five=s.find_all('tr')[8]
+            fiveo=five.find('th').getText()
+            fivet=five.find('td').getText()
+            six=s.find_all('tr')[9]
+            sixo=six.find('th').getText()
+            sixt=six.find('td').getText()
+            wiki=title+"\n"+"___________"+"\n"+p+"___________"+"\n"+oneo+"--"+onet+"\n"+twoo+"--"+twot+"\n"+threeo+"--"+threet+"\n"+fouro+"--"+fourt+"\n"+fiveo+"--"+fivet+"\n"+sixo+"--"+sixt+"\n"+"_____________"
+        except:
+            wiki="There has been a error"    
+
+
     top1=Toplevel()
     top1.title('wiki results are')
-    
+
     bottomframe=Frame(top1)
     scroll=Scrollbar(bottomframe)
     scroll.pack(side=RIGHT,fill=Y)
     answer=Text(bottomframe,width=100, height=25,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
     scroll.config(command=answer.yview)
+    answer.insert(END,wiki)
     answer.pack()
-    bottomframe.pack()
     
+    bottomframe.pack()
+    def addfile():
+        s=ad+".txt"
+        fd=open(s,'w+')
+        fd.write(wiki)
+        fd.close()
+        messagebox.showinfo("SUCESS","{} is cretated and saved".format(s))
     b1=tk.Button(top1,text='search database',bg='red',fg='white',font=('century schoolbook',12,'bold'))
     b1.pack()
-    b2=tk.Button(top1,text='search abc',bg='blue',fg='white',font=('century schoolbook',12,'bold'))
+    b2=tk.Button(top1,text='search abc',command=addfile,bg='blue',fg='white',font=('century schoolbook',12,'bold'))
     b2.pack()
+    
 
     
 def getsrother():
+    if entry1.get() == "":
+         messagebox.showerror("ERROR","PLease enter something to search")
+         return None
     top2=Toplevel()
     top2.title('other results are')
     
@@ -110,7 +191,7 @@ def getsrother():
     
     b1=tk.Button(top2,text='search database',bg='red',fg='white',font=('century schoolbook',12,'bold'))
     b1.pack()
-    b2=tk.Button(top2,text='search abc',bg='blue',fg='white',font=('century schoolbook',12,'bold'))
+    b2=tk.Button(top2,text='search abc', bg='blue',fg='white',font=('century schoolbook',12,'bold'))
     b2.pack()
 
 
