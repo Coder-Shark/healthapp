@@ -177,6 +177,24 @@ def getsrother():
     if entry1.get() == "":
          messagebox.showerror("ERROR","PLease enter something to search")
          return None
+    top3=Toplevel()
+    top3.title('other results are')
+    
+
+    bottomframe=Frame(top3)
+    scroll=Scrollbar(bottomframe)
+    scroll.pack(side=RIGHT,fill=Y)
+    answer=Text(bottomframe,width=100, height=25,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
+    scroll.config(command=answer.yview)
+    answer.pack()
+    bottomframe.pack()
+    
+    b1=tk.Button(top3,text='search database',bg='red',fg='white',font=('century schoolbook',12,'bold'))
+    b1.pack()
+    b2=tk.Button(top3,text='search abc', bg='blue',fg='white',font=('century schoolbook',12,'bold'))
+    b2.pack()
+
+def getadoc():
     top2=Toplevel()
     top2.title('other results are')
     
@@ -193,8 +211,7 @@ def getsrother():
     b1.pack()
     b2=tk.Button(top2,text='search abc', bg='blue',fg='white',font=('century schoolbook',12,'bold'))
     b2.pack()
-
-
+    
 def getsrcredits():
     top3=Toplevel()
     top3.title('CREDITS')
@@ -231,6 +248,9 @@ canvas1.create_window(410,320,window=button2)
 
 button3= tk.Button(text='Other',command=getsrother,bg='blue',fg='white',font=('century schoolbook',12,'bold'))
 canvas1.create_window(610,320,window=button3)
+
+button3= tk.Button(text='Consult Doctor',command=getadoc,bg='blue',fg='white',font=('century schoolbook',12,'bold'))
+canvas1.create_window(510,500,window=button3)
 
 k=tk.Button(text="Credits",command=getsrcredits,bg="black",fg="white",font=("century schoolbook",12,"bold"))
 canvas1.create_window(960,660,window=k)
