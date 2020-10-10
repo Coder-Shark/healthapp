@@ -214,27 +214,57 @@ def getadoc():
     entry3 = tk.Entry (top2,font=("century schoolbook",15))
     canvas3.create_window(300, 300, window=entry3)
 
-    b3=tk.Button(top2,text="Search",bg='black',fg='white',font=('century schoolbook',12,'bold'))
+    def getsaloc():
+        if entry2.get() == "" and entry3.get() == "" :
+            messagebox.showerror("ERROR","PLease enter something to search")
+            return None
+        else:
+            re=requests.get('https://www.practo.com/search?results_type=doctor&q=%5B%7B%22word%22%3A%22Dentist%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22subspeciality%22%7D%2C%7B%22word%22%3A%22Chethipuzha%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22locality%22%7D%5D&city=Kottayam')
+            so=BeautifulSoup(re.content,'html5lib')
+            a=so.find_all('div',class_="u-border-general--bottom")
+            addd=" "
+            for i in range(0,len(a)):
+                try:
+                    c=a[i].find('div',class_="listing-doctor-card")
+                    d=c.find('div',class_="info-section")
+                    url="https://www.practo.com"+d.find('a')['href']
+                    name=d.find('a').getText()
+                    try:
+                        recurreq=requests.get(url)
+                        sop=BeautifulSoup(recurreq.content,'html5lib')
+                        add=sop.find('p',class_="c-profile--clinic__address").getText()
+                        
+                    except:
+                        pass    
+                    f=d.find_all('div',class_="u-grey_3-text")
+                    proff=f[0].find('h3').getText()
+
+                    h=d.find_all('div',class_="uv2-spacer--sm-top")   
+                    addd=addd+"\n"+name+"\n"+url+h[0].getText()+"\n"+add+"\n"+proff+"\n"+"________________"+"\n"
+                except:
+                    print("error")    
+
+        top5=Toplevel()
+        top5.title('')
+        canvas4 = tk.Canvas(top5, width = 600, height = 600)
+        canvas4.pack()
+
+        bottomframe=Frame(top5)
+        scroll=Scrollbar(bottomframe)
+        scroll.pack(side=RIGHT,fill=Y)
+        answer=Text(bottomframe,width=100, height=25,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
+        answer.insert(END,addd)
+        scroll.config(command=answer.yview)
+        answer.pack()
+        bottomframe.pack()
+        
+        b1=tk.Button(top5,text='',bg='red',fg='white',font=('century schoolbook',12,'bold'))
+        b1.pack()
+        b2=tk.Button(top5,text='', bg='blue',fg='white',font=('century schoolbook',12,'bold'))
+        b2.pack()
+
+    b3=tk.Button(top2,text="Search",command=getsaloc,bg='black',fg='white',font=('century schoolbook',12,'bold'))
     canvas3.create_window(300,400,window=b3)
-
-def getsaloc():
-    top5=Toplevel()
-    top5.title('')
-    canvas4 = tk.Canvas(top5, width = 600, height = 600,  relief = 'raised')
-    canvas4.pack()
-
-    bottomframe=Frame(top5)
-    scroll=Scrollbar(bottomframe)
-    scroll.pack(side=RIGHT,fill=Y)
-    answer=Text(bottomframe,width=100, height=25,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
-    scroll.config(command=answer.yview)
-    answer.pack()
-    bottomframe.pack()
-    
-    b1=tk.Button(top5,text='',bg='red',fg='white',font=('century schoolbook',12,'bold'))
-    b1.pack()
-    b2=tk.Button(top5,text='', bg='blue',fg='white',font=('century schoolbook',12,'bold'))
-    b2.pack()
 
 
     

@@ -1,7 +1,7 @@
 import requests as r
 from bs4 import BeautifulSoup
 import html5lib
-re=r.get('https://www.practo.com/search?results_type=doctor&q=%5B%7B%22word%22%3A%22Pediatric Dermatologist%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22subspeciality%22%7D%2C%7B%22word%22%3A%22Chethipuzha%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22locality%22%7D%5D&city=Kottayam')
+re=r.get('https://www.practo.com/search?results_type=doctor&q=%5B%7B%22word%22%3A%22Dentist%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22subspeciality%22%7D%2C%7B%22word%22%3A%22Chethipuzha%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22locality%22%7D%5D&city=Kottayam')
 so=BeautifulSoup(re.content,'html5lib')
 a=so.find_all('div',class_="u-border-general--bottom")
 
