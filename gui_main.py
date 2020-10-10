@@ -163,7 +163,7 @@ def getsrwiki():
     def addfile():
         s=ad+".txt"
         fd=open(s,'w+')
-        fd.write(wiki)
+        fd.write(wiki.encode("utf-8"))
         fd.close()
         messagebox.showinfo("SUCESS","{} is cretated and saved".format(s))
     b1=tk.Button(top1,text='search database',bg='red',fg='white',font=('century schoolbook',12,'bold'))
@@ -184,7 +184,7 @@ def getsrother():
     bottomframe=Frame(top3)
     scroll=Scrollbar(bottomframe)
     scroll.pack(side=RIGHT,fill=Y)
-    answer=Text(bottomframe,width=300, height=150,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
+    answer=Text(bottomframe,width=100, height=25,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
     scroll.config(command=answer.yview)
     answer.pack()
     bottomframe.pack()
@@ -215,11 +215,14 @@ def getadoc():
     canvas3.create_window(300, 300, window=entry3)
 
     def getsaloc():
-        if entry2.get() == "" and entry3.get() == "" :
+        s1=entry2.get()
+        s2=entry3.get()
+        if entry2.get() == "" and entry3.get() == "":
             messagebox.showerror("ERROR","PLease enter something to search")
             return None
         else:
-            re=requests.get('https://www.practo.com/search?results_type=doctor&q=%5B%7B%22word%22%3A%22Dentist%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22subspeciality%22%7D%2C%7B%22word%22%3A%22Chethipuzha%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22locality%22%7D%5D&city=Kottayam')
+            url="https://www.practo.com/search?results_type=doctor&q=%5B%7B%22word%22%3A%22{}%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22subspeciality%22%7D%2C%7B%22word%22%3A%22{}%22%2C%22autocompleted%22%3Atrue%2C%22category%22%3A%22locality%22%7D%5D&city=Kottayam".format(s1,s2)
+            re=requests.get(url)
             so=BeautifulSoup(re.content,'html5lib')
             a=so.find_all('div',class_="u-border-general--bottom")
             addd=" "
@@ -240,14 +243,13 @@ def getadoc():
                     proff=f[0].find('h3').getText()
 
                     h=d.find_all('div',class_="uv2-spacer--sm-top")   
-                    addd=addd+"\n"+name+"\n"+url+h[0].getText()+"\n"+add+"\n"+proff+"\n"+"________________"+"\n"
+                    addd=addd+"\n"+name+"\n"+url+h[0].getText()+"\n"+add+"\n"+proff+"\n"+"#######################################"+"\n"
                 except:
-                    print("error")    
+                    pass   
 
         top5=Toplevel()
         top5.title('')
-        canvas4 = tk.Canvas(top5, width = 600, height = 600)
-        canvas4.pack()
+      
 
         bottomframe=Frame(top5)
         scroll=Scrollbar(bottomframe)
@@ -257,10 +259,14 @@ def getadoc():
         scroll.config(command=answer.yview)
         answer.pack()
         bottomframe.pack()
-        
-        b1=tk.Button(top5,text='',bg='red',fg='white',font=('century schoolbook',12,'bold'))
-        b1.pack()
-        b2=tk.Button(top5,text='', bg='blue',fg='white',font=('century schoolbook',12,'bold'))
+        def addfileP():
+            s=s1+"_in_"+s2+".txt"
+            fd=open(s,'w',encoding='utf-8')
+            fd.write(addd)
+            fd.close()
+            messagebox.showinfo("SUCESS","{} is cretated and saved".format(s))
+       
+        b2=tk.Button(top5,text='Save as Text File',command=addfileP, bg='blue',fg='white',font=('century schoolbook',12,'bold'))
         b2.pack()
 
     b3=tk.Button(top2,text="Search",command=getsaloc,bg='black',fg='white',font=('century schoolbook',12,'bold'))
