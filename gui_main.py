@@ -184,7 +184,7 @@ def getsrother():
     bottomframe=Frame(top3)
     scroll=Scrollbar(bottomframe)
     scroll.pack(side=RIGHT,fill=Y)
-    answer=Text(bottomframe,width=100, height=25,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
+    answer=Text(bottomframe,width=300, height=150,font=("century",13),yscrollcommand=scroll.set,wrap=WORD)
     scroll.config(command=answer.yview)
     answer.pack()
     bottomframe.pack()
